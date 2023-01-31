@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { useOnClickOutside } from "usehooks-ts";
+import { useOnClickOutside, useMediaQuery } from "usehooks-ts";
 import { NasaDataType } from "../types";
 
 type ModalPropType = {
@@ -11,6 +11,8 @@ type ModalPropType = {
 export const Modal = ({ data, setOpenModal, setLocked }: ModalPropType) => {
   const ref = useRef(null);
 
+  const matches = useMediaQuery("(min-width: 1224px)");
+
   const handleClickOutside = () => {
     setOpenModal(undefined);
     setLocked(false);
@@ -21,7 +23,7 @@ export const Modal = ({ data, setOpenModal, setLocked }: ModalPropType) => {
   return (
     <div className="fixed h-screen w-screen flex justify-center items-center top-0 left-0 bg-[#1E1E1E] bg-opacity-80 z-10">
       <div
-        className="rounded-xl flex flex-col gap-4  bg-white text-black w-1/2"
+        className="rounded-xl flex flex-col gap-4  bg-white text-black w-[85%] lg:w-1/2"
         ref={ref}
       >
         <div
@@ -48,7 +50,11 @@ export const Modal = ({ data, setOpenModal, setLocked }: ModalPropType) => {
         </div>
         <div className="py-3 px-6 flex flex-col gap-4">
           <div className="text-2xl font-semibold">{data.title}</div>
-          <div className="font-light">{data.explanation}</div>
+          <div className="font-light">
+            {matches
+              ? data.explanation
+              : `${data.explanation.slice(0, 350)}...`}
+          </div>
           <div className="font-light">
             authored by{" "}
             <span className="font-semibold">
