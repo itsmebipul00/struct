@@ -17,3 +17,4 @@ description:
 useIntersectionObserver for detecting end of posts visibliblity and implementing infinite scroll
 useOnClickOutside for handling clicks outside an element
 useLockedBody to block the scrolling (used in modals)
+useMediaQuery to retrieve media dimensions

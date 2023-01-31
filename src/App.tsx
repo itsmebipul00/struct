@@ -1,8 +1,12 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, Fragment } from "react";
 import "./App.css";
 import axios from "axios";
 import nasaImg from "./nasaImg.png";
-import { useLockedBody, useIntersectionObserver } from "usehooks-ts";
+import {
+  useLockedBody,
+  useIntersectionObserver,
+  useMediaQuery,
+} from "usehooks-ts";
 import { Modal } from "./Components/Modal";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
@@ -22,6 +26,7 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [startDate, setStartDate] = useState<string>(sDate);
   const [endDate, setEndDate] = useState<string>(eDate);
+  const matches = useMediaQuery("(min-width: 1024px)");
 
   const API = `https://api.nasa.gov/planetary/apod?api_key=gaff4Pwpu0Qg6woyFty1YhVRxhj4In1ImvOCyFD7&start_date=${startDate}&end_date=${endDate}&thumbs=true`;
 
@@ -70,24 +75,32 @@ function App() {
 
   return (
     <div className="p-12 min-h-screen bg-[#1E1E1E] text-white flex flex-col gap-16">
-      <div className="flex justify-between">
-        <img src={nasaImg} alt="nasaImg" className="w-[14rem] h-16" />
-        <h2 className="font-semibold text-3xl">Astronomy Picture Of The Day</h2>
+      <div className="flex items-center justify-between">
+        <img
+          src={nasaImg}
+          alt="nasaImg"
+          className="w-[6rem] h-10 lg:w-[14rem] lg:h-16"
+        />
+        <h2 className="font-semibold hidden text-3xl lg:block">
+          Astronomy Picture Of The Day
+        </h2>
       </div>
       {!featuredPost ? (
         <Skeleton count={1} height="100vh" width="100%" inline={true} />
       ) : (
-        <div className="flex gap-[6rem] ">
-          <div className="flex gap-4 flex-col w-1/2 self-center">
+        <div className="flex flex-col lg:flex-row gap-8 lg:gap-[6rem]">
+          <div className="flex gap-4 flex-col w-full lg:w-1/2 self-center order-2 lg:order-1">
             <h2 className="font-semibold text-3xl">{featuredPost?.title}</h2>
             <p className="font-light text-xl">{featuredPost?.explanation}</p>
             <p className="font-light">
               authored by{" "}
-              <span className="font-semibold">{featuredPost?.copyright}</span>
+              <span className="font-semibold">
+                {featuredPost?.copyright ?? "Bipul Sharma"}
+              </span>
             </p>
           </div>
 
-          <div className="w-1/2">
+          <div className="w-full lg:w-1/2 order-1 lg:order-2">
             {featuredPost?.media_type === "image" && (
               <img
                 src={featuredPost.hdurl}
@@ -151,10 +164,16 @@ function App() {
       )}
       {loading && (
         <div className="[&>*]:flex [&>*]:gap-8 flex flex-col gap-8">
-          <Skeleton count={4} height="15rem" width="20rem" inline={true} />
-          <Skeleton count={4} height="15rem" width="20rem" inline={true} />
-          <Skeleton count={4} height="15rem" width="20rem" inline={true} />
-          <Skeleton count={4} height="15rem" width="20rem" inline={true} />
+          {matches ? (
+            <Fragment>
+              <Skeleton count={4} height="15rem" width="20rem" inline={true} />
+              <Skeleton count={4} height="15rem" width="20rem" inline={true} />
+              <Skeleton count={4} height="15rem" width="20rem" inline={true} />
+              <Skeleton count={4} height="15rem" width="20rem" inline={true} />
+            </Fragment>
+          ) : (
+            <Skeleton count={1} height="15rem" width="20rem" inline={true} />
+          )}
         </div>
       )}
       <div ref={intersectionRef}></div>
