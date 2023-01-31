@@ -1,0 +1,19 @@
+==============================================================
+The following libraries are used : 
+==============================================================
+
+1. axios
+url: https://axios-http.com/
+description: making http requests
+2. date-fns
+url: https://date-fns.org/
+description: date formating and manipulation (substration in our case)
+3. react-loading-skeleton
+url: https://github.com/dvtng/react-loading-skeleton
+description: for skeleton loading
+4. usehooks-ts
+url: https://usehooks-ts.com/
+description: 
+useIntersectionObserver for detecting end of posts visibliblity and implementing infinite scroll
+useOnClickOutside for handling clicks outside an element
+useLockedBody to block the scrolling (used in modals)
